@@ -61,8 +61,13 @@
       border-radius: 10px;
       margin-bottom: 20px;
     }
+    .about {
+      background-color: #e0f2fe;
+      padding: 20px;
+      margin-top: 40px;
+      border-radius: 10px;
+    }
   </style>
-  <!-- PopAds Code Placeholder -->
   <script type="text/javascript" src="https://www.popads.net/pop.js"></script>
 </head>
 <body>
@@ -70,8 +75,17 @@
     <h1>Creator Fund Application</h1>
     <p>Apply to get funding for your content journey</p>
   </header>  <div class="container">
-    <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=800&q=60" alt="Creators" class="image-banner"><h2>Application Form</h2>
-<form>
+    <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=800&q=60" alt="Creators" class="image-banner"><div class="about">
+  <h2>About This Program</h2>
+  <p>The Creator Fund Program is a community-driven initiative aimed at supporting rising content creators by helping them access tools, guidance, and potential sponsorships. This is not affiliated with YouTube, TikTok, or any other platform — it’s a private initiative to help talented individuals grow.</p>
+  <p>Submissions are reviewed manually, and selected participants may be contacted for future opportunities. By applying, you consent to be contacted for relevant updates.</p>
+</div>
+
+<h2>Application Form</h2>
+<form action="https://formsubmit.co/creatorprogram36@gmail.com" method="POST">
+  <input type="hidden" name="_next" value="thankyou.html">
+  <input type="hidden" name="_captcha" value="false">
+
   <label for="name">Full Name</label>
   <input type="text" id="name" name="name" required>
 
@@ -81,13 +95,16 @@
   <label for="platform">Primary Content Platform (YouTube, TikTok, etc.)</label>
   <input type="text" id="platform" name="platform" required>
 
+  <label for="username">Social Media Username (e.g. @yourhandle)</label>
+  <input type="text" id="username" name="username" required>
+
   <label for="followers">Current Followers/Subscribers</label>
   <input type="number" id="followers" name="followers" required>
 
   <label for="goals">Why do you want to join the Creator Fund?</label>
   <textarea id="goals" name="goals" rows="4" required></textarea>
 
-  <button type="submit">Submit Application</button>
+  <button type="submit" onclick="triggerInterstitial()">Submit Application</button>
 </form>
 
 <h2>Support Our Program</h2>
@@ -95,19 +112,43 @@
 <button class="ad-button" onclick="showAd()">Show Support Ad</button>
 
   </div>  <script>
+    // Initialize PopAds
+    PopAds.setZoneId(YOUR_SITE_ID); // Replace with your actual PopAds zone ID
+    PopAds.start();
+
+    // Button popup
     function showAd() {
-      if (typeof PopAds !== 'undefined') {
-        PopAds.requestPopunder('YOUR_POPADS_SITE_ID', {
-          onOpen: function () {
-            console.log("Ad opened!");
-          },
-          onError: function () {
-            console.log("Ad failed to open.");
-          }
-        });
-      } else {
-        alert("Ad network not loaded.");
-      }
+      PopAds.requestPopunder(YOUR_SITE_ID, {
+        onOpen: () => console.log("Manual ad opened"),
+        onError: () => console.log("Manual ad failed")
+      });
     }
+
+    // Interstitial on form submit
+    function triggerInterstitial() {
+      PopAds.requestInterstitial(YOUR_SITE_ID, {
+        onOpen: () => console.log("Interstitial opened"),
+        onError: () => console.log("Interstitial failed to open")
+      });
+    }
+
+    // Popup on scroll
+    let hasScrolled = false;
+    window.addEventListener('scroll', () => {
+      if (!hasScrolled) {
+        hasScrolled = true;
+        PopAds.requestPopunder(YOUR_SITE_ID);
+      }
+    });
+
+    // Popup on input field focus
+    document.addEventListener('DOMContentLoaded', () => {
+      const fields = document.querySelectorAll('input, textarea');
+      fields.forEach(field => {
+        field.addEventListener('focus', () => {
+          PopAds.requestPopunder(YOUR_SITE_ID);
+        }, { once: true });
+      });
+    });
   </script></body>
-  </html>
+</html>
